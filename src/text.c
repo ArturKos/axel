@@ -192,9 +192,10 @@ parse_option(int option, conf_t *conf, char fn[MAX_STRING], int *do_search,
 	case 'P':
 		/* One-line progress bar only: the alternate bar plus a
 		 * verbosity low enough to drop all informational output,
-		 * keeping errors. */
+		 * keeping errors. Assign the deferred counter (not
+		 * conf->verbose) so -v/-P give ordinary last-wins semantics. */
 		conf->progress_style = AXEL_PROGRESS_STYLE_ALTERNATIVE;
-		conf->verbose = AXEL_MSG_ERROR;
+		*verbose = AXEL_MSG_ERROR;
 		break;
 	case 'k':
 		conf->insecure = 1;
@@ -839,7 +840,7 @@ print_help(void)
 		 "-v\tMore status information\n"
 		 "-a\tAlternate progress indicator\n"
 		 "-p\tPrint simple percentages instead of progress bar (0-100)\n"
-		 "-P\tShow only the one-line progress bar, suppressing other output\n"
+		 "-P\tShow only the one-line progress bar, suppressing non-error output\n"
 		 "-h\tThis information\n"
 		 "-T x\tSet I/O and connection timeout\n"
 		 "-V\tVersion information\n"
@@ -867,7 +868,7 @@ print_help(void)
 		 "--verbose\t\t-v\tMore status information\n"
 		 "--alternate\t\t-a\tAlternate progress indicator\n"
 		 "--percentage\t\t-p\tPrint simple percentages instead of progress bar (0-100)\n"
-		 "--progress-only\t\t-P\tShow only the one-line progress bar, suppressing other output\n"
+		 "--progress-only\t\t-P\tShow only the one-line progress bar, suppressing non-error output\n"
 		 "--help\t\t\t-h\tThis information\n"
 		 "--timeout=x\t\t-T x\tSet I/O and connection timeout\n"
 		 "--version\t\t-V\tVersion information\n"

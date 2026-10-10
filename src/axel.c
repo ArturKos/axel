@@ -777,7 +777,7 @@ setup_thread(void *c)
 
 /* Add a message to the axel->message structure */
 void
-axel_message(axel_t *axel, int level, const char *format, ...)
+axel_message(axel_t *axel, msg_level_t level, const char *format, ...)
 {
 	message_t *m;
 	va_list params;
@@ -785,8 +785,11 @@ axel_message(axel_t *axel, int level, const char *format, ...)
 	if (!axel)
 		goto nomem;
 
-	/* Drop messages above the configured verbosity level. */
-	if (level > axel->conf->verbose)
+	/* Drop messages above the configured verbosity level. A negative
+	 * verbose means "no status output" and must not swallow errors that
+	 * an embedder still relies on, so the level check is skipped there
+	 * (the CLI's --quiet additionally points stdout at /dev/null). */
+	if (axel->conf->verbose >= 0 && (int)level > axel->conf->verbose)
 		return;
 
 	m = calloc(1, sizeof(message_t));

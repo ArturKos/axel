@@ -164,7 +164,7 @@ void axel_close(axel_t *axel);
 void print_messages(axel_t *axel);
 
 /* Queue a line for the progress display to print between updates */
-void axel_message(axel_t *axel, int level, const char *format, ...) PRINTF_FUNC(3);
+void axel_message(axel_t *axel, msg_level_t level, const char *format, ...) PRINTF_FUNC(3);
 
 /* Hand each connection a share of the file to fetch */
 void axel_divide(axel_t *axel);
